@@ -1,0 +1,33 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: countries_backend
+    environment:
+      - HOSTNAME=0.0.0.0
+    ports:
+      - 3000:3000
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - countries_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: countries_frontend
+    depends_on:
+      - backend
+    ports:
+      - 3006:3006
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - countries_network
+
+networks:
+  countries_network:
